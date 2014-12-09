@@ -1,12 +1,12 @@
 package com.experiments.rxjava;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by thimes on 11/19/14.
