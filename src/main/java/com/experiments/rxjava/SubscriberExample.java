@@ -10,46 +10,46 @@ import rx.functions.Action1;
 public class SubscriberExample {
 
     public static void main(String[] args) {
-        new SubscriberExample().go();
-    }
-
-    private void go() {
         Observable<String> cleanStringObservable = Observable.from(new String[]{"firsties", "seconds", "3rd", "FORE!"});
-        Observable<String> dirtyStringObservable = Observable.from(new String[]{"firsties", "seconds", null, "FORE!"});
+        Observable<String> dirtyStringObservable = Observable.from(new String[]{"dirsties", "deconds", null, "DORE!"});
 
-        cleanStringObservable.subscribe(getAction());
-        //cleanStringObservable.subscribe(getSubscriber());
-        //dirtyStringObservable.subscribe(getAction());
-        //dirtyStringObservable.subscribe(getSubscriber());
+//        cleanStringObservable.subscribe(action);
+//        dirtyStringObservable.subscribe(action);
+
+        cleanStringObservable.subscribe(subscriber);
+        dirtyStringObservable.subscribe(subscriber);
     }
 
-    private Subscriber<String> getSubscriber() {
-        return new Subscriber<String>() {
-                    @Override
-                    public void onCompleted() {
-                        System.out.println("Finished up cleanly!");
-                    }
+    private static final Action1<String> action = new Action1<String>() {
+        @Override
+        public void call(String s) {
+            System.out.println("My string " + s + " is " + s.length() + " characters long");
+        }
+    };
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println("Something went awry!");
-                        e.printStackTrace();
-                    }
+    private static final Action1<Throwable> error = new Action1<Throwable>() {
+        @Override
+        public void call(Throwable throwable) {
+            System.out.println("Something went awry!");
+            throwable.printStackTrace(System.out);
+        }
+    };
 
-                    @Override
-                    public void onNext(String s) {
-                        System.out.println("My string " + s + " is " + s.length() + " characters long");
-                    }
-                };
-    }
+    private static final Subscriber<String> subscriber = new Subscriber<String>() {
+        @Override
+        public void onCompleted() {
+            System.out.println("Finished up cleanly!");
+        }
 
-    private Action1<String> getAction() {
-        return new Action1<String>() {
-            @Override
-            public void call(String s) {
-                System.out.println("My string " + s + " is " + s.length() + " characters long");
-            }
-        };
-    }
+        @Override
+        public void onError(Throwable e) {
+            error.call(e);
+        }
 
+        @Override
+        public void onNext(String s) {
+            action.call(s);
+        }
+    };
 }
+

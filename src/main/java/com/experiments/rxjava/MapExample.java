@@ -9,29 +9,38 @@ import rx.functions.Func1;
  */
 public class MapExample {
 
+    private static final Func1<String, Integer> parseStringToInt =
+            new Func1<String, Integer>() {
+                @Override
+                public Integer call(String emittedString) {
+                    return Integer.parseInt(emittedString);
+                }
+            };
+
+    private static final Func1<String, Boolean> canParseAsInt =
+            new Func1<String, Boolean>() {
+                @Override
+                public Boolean call(String s) {
+                    try {
+                        Integer.parseInt(s);
+                    } catch (Exception e) {
+                        return false;
+                    }
+                    return true;
+                }
+            };
+
     public static void main(String[] args) {
-        new MapExample().mapOnce();
-    }
-
-    private void mapOnce() {
-
-        Observable.from(new String[]{"1", "blah"})
-        .map(new Func1<String, String>() {
-            @Override
-            public String call(String emittedString) {
-                return "add something to the front, " + emittedString;
-            }
-        }).map(new Func1<String, String>() {
-            @Override
-            public String call(String s) {
-                return s+" and append something";
-            }
-        }).subscribe(new Action1<String>() {
-            @Override
-            public void call(String string) {
-                System.out.println(string);
-            }
-        });
+        Observable
+                .from(new String[]{"1", "blah"})
+                .filter(canParseAsInt)
+                .map(parseStringToInt)
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer ints) {
+                        System.out.println(ints);
+                    }
+                });
     }
 
 }

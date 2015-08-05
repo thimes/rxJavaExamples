@@ -1,5 +1,6 @@
 package com.experiments.rxjava;
 
+import com.sun.tools.javac.util.Pair;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -9,33 +10,24 @@ import rx.schedulers.Schedulers;
  */
 public class FibonacciObservable {
     public static void main(String[] args) {
-        new Runnable() {
-
-            @Override
-            public void run() {
-                new FibonacciObservable().go();
-            }
-        }.run();
+        FibonacciObservable.go();
     }
 
-
-
-    public void go() {
-
-        final Pair<Integer, Integer> fibPair = new Pair<Integer, Integer>(0, 1);
+    public static void go() {
+        final Pair<Integer, Integer>[] fibPair = new Pair[]{new Pair<Integer, Integer>(0, 1)};
 
         Observable<Integer> o = Observable.range(0, 100).subscribeOn(Schedulers.io());
 
         o.take(8).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer o) {
-                int i = fibPair.first + fibPair.second;
-                fibPair.first = fibPair.second;
+                int i = fibPair[0].fst + fibPair[0].snd;
 
-                System.out.println(fibPair.first);
+                System.out.println(fibPair[0].fst);
 
-                fibPair.second = i;
+                fibPair[0] = new Pair<Integer, Integer>(fibPair[0].snd, i);
             }
+
         });
     }
 }

@@ -20,35 +20,27 @@ public class FizzBuzzFilters {
         fizzbuzzObserver.filter(new Func1<Integer, Boolean>() {
             @Override
             public Boolean call(Integer integer) {
-                return integer % 3 == 0 && integer % 5 != 0;
+                return integer % 3 == 0;
             }
         }).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
-                System.out.println(integer + " : Fizz");
-            }
-        });
-
-        fizzbuzzObserver.filter(new Func1<Integer, Boolean>() {
-            @Override
-            public Boolean call(Integer integer) {
-                return integer % 3 != 0 && integer % 5 == 0;
-            }
-        }).subscribe(new Action1<Integer>() {
-            @Override
-            public void call(Integer integer) {
-                System.out.println(integer + " : Buzz");
+                if (integer % 5 == 0) {
+                    System.out.println(integer + ":fizzbuzz");
+                } else {
+                    System.out.println(integer + ":fizz");
+                }
             }
         });
         fizzbuzzObserver.filter(new Func1<Integer, Boolean>() {
             @Override
             public Boolean call(Integer integer) {
-                return integer % 3 == 0 && integer % 5 == 0;
+                return integer % 5 == 0;
             }
         }).subscribe(new Action1<Integer>() {
             @Override
             public void call(Integer integer) {
-                System.out.println(integer + " : Buzz");
+                System.out.println(integer + ":buzz");
             }
         });
 

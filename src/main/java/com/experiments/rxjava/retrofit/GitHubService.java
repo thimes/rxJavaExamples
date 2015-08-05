@@ -1,6 +1,8 @@
 package com.experiments.rxjava.retrofit;
 
 import com.experiments.rxjava.retrofit.data.Contributor;
+import com.experiments.rxjava.retrofit.data.GithubEvent;
+import com.experiments.rxjava.retrofit.data.Issue;
 import com.experiments.rxjava.retrofit.data.User;
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -36,4 +38,13 @@ public interface GitHubService {
     Observable<User> getContributorsObservable(
             @Path("user") String user
     );
+
+    @GET("/users/{user}/events")
+    Observable<List<GithubEvent>> getEvents(
+            @Path("user") String user
+    );
+
+    @GET("/orgs/{org}/issues")
+    Observable<List<Issue>> getIssues(String org);
+
 }
